@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import Image from 'next/image'
 
 export default function LandingPage() {
   const [loading, setLoading] = useState(false)
@@ -26,7 +25,7 @@ export default function LandingPage() {
       {/* NAVBAR */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 40px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Image src="/logo.png" alt="FinSight AI" width={36} height={36} style={{ borderRadius: '10px', objectFit: 'cover' }} />
+          <img src="/logo.png" alt="FinSight AI" width={36} height={36} style={{ borderRadius: '10px', objectFit: 'cover' }} />
           <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '20px', background: 'linear-gradient(135deg, var(--accent), var(--accent2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             FinSight AI
           </span>
@@ -40,7 +39,7 @@ export default function LandingPage() {
       <section style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', maxWidth: '1100px', width: '100%', alignItems: 'center' }}>
 
-          {/* LEFT — Text */}
+          {/* LEFT */}
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', background: 'rgba(0,229,160,0.08)', border: '1px solid rgba(0,229,160,0.2)', marginBottom: '24px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block', animation: 'pulse 2s infinite' }}></span>
@@ -66,11 +65,7 @@ export default function LandingPage() {
               border: 'none', cursor: 'pointer', fontSize: '15px',
               fontFamily: 'Syne', fontWeight: 700, color: '#080c14',
               boxShadow: '0 8px 32px rgba(0,229,160,0.3)',
-              transition: 'transform 0.2s'
-            }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-            >
+            }}>
               {loading ? '⏳ Signing in...' : (
                 <>
                   <svg width="20" height="20" viewBox="0 0 24 24">
@@ -89,17 +84,15 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* RIGHT — Preview card */}
+          {/* RIGHT — Preview */}
           <div style={{ position: 'relative' }}>
             <div style={{ background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '20px', padding: '24px', boxShadow: '0 40px 80px rgba(0,0,0,0.4)' }}>
-              {/* Mock dashboard preview */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                <Image src="/logo.jpg" alt="Logo" width={28} height={28} style={{ borderRadius: '8px', objectFit: 'cover' }} />
+                <img src="/logo.png" alt="Logo" width={28} height={28} style={{ borderRadius: '8px', objectFit: 'cover' }} />
                 <span style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '14px', color: 'var(--accent)' }}>FinSight AI</span>
                 <span style={{ marginLeft: 'auto', fontSize: '11px', padding: '3px 10px', borderRadius: '20px', background: 'rgba(0,229,160,0.1)', color: 'var(--accent)', border: '1px solid rgba(0,229,160,0.2)' }}>● Live</span>
               </div>
 
-              {/* Mock metric cards */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', marginBottom: '16px' }}>
                 {[
                   { label: 'AAPL', value: '$189.50', color: 'var(--accent2)' },
@@ -113,7 +106,6 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              {/* Mock chart */}
               <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '14px', border: '1px solid rgba(255,255,255,0.06)', marginBottom: '12px' }}>
                 <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '10px' }}>📈 Price Chart</div>
                 <svg width="100%" height="60" viewBox="0 0 300 60">
@@ -122,7 +114,6 @@ export default function LandingPage() {
                 </svg>
               </div>
 
-              {/* Mock news */}
               <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '8px' }}>📰 Latest News</div>
               {['Apple beats Q4 earnings expectations', 'iPhone 16 demand surges globally'].map((n, i) => (
                 <div key={i} style={{ display: 'flex', gap: '8px', padding: '8px 0', borderBottom: i === 0 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
@@ -131,9 +122,6 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-
-            {/* Glow effect */}
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(0,229,160,0.1) 0%, transparent 70%)', pointerEvents: 'none', zIndex: -1 }} />
           </div>
         </div>
       </section>
@@ -147,10 +135,7 @@ export default function LandingPage() {
             { icon: '🎓', title: 'Beginner Friendly', desc: 'Every metric explained in plain English' },
             { icon: '🌐', title: 'Indian & Global', desc: 'NSE, BSE, NASDAQ, NYSE & Crypto' },
           ].map((f, i) => (
-            <div key={i} style={{ padding: '20px', borderRadius: '16px', background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.06)', transition: 'transform 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-            >
+            <div key={i} style={{ padding: '20px', borderRadius: '16px', background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.06)' }}>
               <div style={{ fontSize: '28px', marginBottom: '10px' }}>{f.icon}</div>
               <div style={{ fontFamily: 'Syne', fontWeight: 600, fontSize: '14px', marginBottom: '6px' }}>{f.title}</div>
               <div style={{ fontSize: '12px', color: 'var(--muted)', lineHeight: 1.5 }}>{f.desc}</div>
