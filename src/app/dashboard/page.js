@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import StockChart from '@/components/StockChart'
 import ChatAssistant from '@/components/ChatAssistant'
+import Image from 'next/image'
 
 export default function Dashboard() {
   const router = useRouter()
@@ -11,6 +12,7 @@ export default function Dashboard() {
   const [ticker, setTicker] = useState('')
   const [loading, setLoading] = useState(false)
   const [stockData, setStockData] = useState(null)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   useEffect(() => {
     const getUser = async () => {
@@ -57,56 +59,86 @@ export default function Dashboard() {
       {/* SIDEBAR */}
       <div style={{
         position: 'fixed', left: 0, top: 0, bottom: '40px',
-        width: '240px', background: 'var(--surface)',
+        width: sidebarOpen ? '240px' : '64px',
+        background: 'var(--surface)',
         borderRight: '1px solid rgba(255,255,255,0.06)',
         display: 'flex', flexDirection: 'column',
-        padding: '20px 14px', gap: '6px', zIndex: 100, overflowY: 'auto'
+        padding: '16px 10px', gap: '4px',
+        zIndex: 100, overflowY: 'auto',
+        overflowX: 'hidden',
+        transition: 'width 0.3s ease'
       }}>
-        {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'linear-gradient(135deg, var(--accent), var(--accent2))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M2 12 L5 7 L8 9 L11 4 L14 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="14" cy="6" r="1.5" fill="white"/>
-            </svg>
-          </div>
-          <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '18px', background: 'linear-gradient(135deg, var(--accent), var(--accent2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            FinSight AI
-          </span>
+
+        {/* Logo + Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', minWidth: 0 }}>
+          <Image
+            src="/logo.jpg"
+            alt="FinSight AI"
+            width={32}
+            height={32}
+            style={{ borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }}
+          />
+          {sidebarOpen && (
+            <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '16px', background: 'linear-gradient(135deg, var(--accent), var(--accent2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', whiteSpace: 'nowrap' }}>
+              FinSight AI
+            </span>
+          )}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer', fontSize: '16px', padding: '4px', flexShrink: 0 }}
+          >
+            {sidebarOpen ? '◀' : '▶'}
+          </button>
         </div>
 
         {/* User pill */}
-        <div style={{ background: 'rgba(0,229,160,0.08)', border: '1px solid rgba(0,229,160,0.2)', borderRadius: '10px', padding: '10px 12px', marginBottom: '8px' }}>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
-            👋 {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
+        {sidebarOpen && (
+          <div style={{ background: 'rgba(0,229,160,0.08)', border: '1px solid rgba(0,229,160,0.2)', borderRadius: '10px', padding: '10px 12px', marginBottom: '8px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              👋 {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '2px' }}>Pro Account</div>
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '2px' }}>Pro Account</div>
-        </div>
+        )}
 
         {/* Search */}
-        <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1.2px', padding: '8px 4px 4px' }}>Analysis</div>
-        <div style={{ background: 'var(--surface2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ color: 'var(--muted)', fontSize: '14px' }}>🔍</span>
-          <input
-            value={ticker}
-            onChange={e => setTicker(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleAnalysis()}
-            placeholder="Enter ticker (e.g. AMZN)"
-            style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text)', fontSize: '13px', fontFamily: 'DM Sans', width: '100%' }}
-          />
-        </div>
-        <button
-          onClick={handleAnalysis}
-          disabled={loading}
-          style={{ background: 'linear-gradient(135deg, var(--accent), #00c97a)', border: 'none', borderRadius: '10px', padding: '11px', color: '#080c14', fontFamily: 'Syne', fontSize: '13px', fontWeight: 700, cursor: 'pointer', width: '100%', marginTop: '6px' }}
-        >
-          {loading ? '⏳ Loading...' : '🚀 Run Analysis'}
-        </button>
+        {sidebarOpen && (
+          <>
+            <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1.2px', padding: '8px 4px 4px' }}>Analysis</div>
+            <div style={{ background: 'var(--surface2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ color: 'var(--muted)', fontSize: '14px' }}>🔍</span>
+              <input
+                value={ticker}
+                onChange={e => setTicker(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleAnalysis()}
+                placeholder="Ticker (e.g. AMZN)"
+                style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text)', fontSize: '13px', fontFamily: 'DM Sans', width: '100%' }}
+              />
+            </div>
+            <button
+              onClick={handleAnalysis}
+              disabled={loading}
+              style={{ background: 'linear-gradient(135deg, var(--accent), #00c97a)', border: 'none', borderRadius: '10px', padding: '11px', color: '#080c14', fontFamily: 'Syne', fontSize: '13px', fontWeight: 700, cursor: 'pointer', width: '100%', marginTop: '4px' }}
+            >
+              {loading ? '⏳' : '🚀 Run Analysis'}
+            </button>
+          </>
+        )}
+
+        {/* Collapsed search button */}
+        {!sidebarOpen && (
+          <button
+            onClick={() => setSidebarOpen(true)}
+            style={{ background: 'var(--surface2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px', cursor: 'pointer', fontSize: '16px', width: '100%', marginBottom: '4px' }}
+          >
+            🔍
+          </button>
+        )}
 
         {/* Nav */}
-        <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1.2px', padding: '12px 4px 4px' }}>Navigate</div>
+        {sidebarOpen && <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1.2px', padding: '10px 4px 4px' }}>Navigate</div>}
         {[
-          { icon: '📊', label: 'Dashboard' },
+          { icon: '📊', label: 'Dashboard', href: '/dashboard' },
           { icon: '⚖️', label: 'Compare Stocks', href: '/dashboard/compare' },
           { icon: '🌐', label: 'Market Overview' },
           { icon: '📰', label: 'News Feed' },
@@ -114,42 +146,60 @@ export default function Dashboard() {
         ].map((item, i) => (
           <div key={i}
             onClick={() => item.href && router.push(item.href)}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '13.5px', fontWeight: 500, color: 'var(--muted)', transition: 'all 0.2s' }}
+            title={item.label}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: sidebarOpen ? '9px 12px' : '10px', borderRadius: '10px', cursor: 'pointer', fontSize: '13.5px', fontWeight: 500, color: 'var(--muted)', transition: 'all 0.2s', justifyContent: sidebarOpen ? 'flex-start' : 'center' }}
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface2)'; e.currentTarget.style.color = 'var(--text)' }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--muted)' }}
           >
-            <span>{item.icon}</span> {item.label}
+            <span style={{ fontSize: '18px', flexShrink: 0 }}>{item.icon}</span>
+            {sidebarOpen && item.label}
           </div>
         ))}
 
         {/* Watchlist */}
-        <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1.2px', padding: '12px 4px 4px' }}>Watchlist</div>
-        {[
-          { ticker: 'TSLA', chg: '+2.3%', up: true },
-          { ticker: 'NVDA', chg: '+1.8%', up: true },
-          { ticker: 'INFY', chg: '-0.5%', up: false },
-        ].map((w, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', borderRadius: '8px', background: 'var(--surface2)', border: '1px solid rgba(255,255,255,0.06)', fontSize: '12px', cursor: 'pointer' }}>
-            <span style={{ fontFamily: 'Syne', fontWeight: 700 }}>{w.ticker}</span>
-            <span style={{ color: w.up ? 'var(--accent)' : 'var(--red)' }}>{w.up ? '▲' : '▼'} {w.chg}</span>
-          </div>
-        ))}
+        {sidebarOpen && (
+          <>
+            <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1.2px', padding: '10px 4px 4px' }}>Watchlist</div>
+            {[
+              { ticker: 'TSLA', chg: '+2.3%', up: true },
+              { ticker: 'NVDA', chg: '+1.8%', up: true },
+              { ticker: 'INFY', chg: '-0.5%', up: false },
+            ].map((w, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', borderRadius: '8px', background: 'var(--surface2)', border: '1px solid rgba(255,255,255,0.06)', fontSize: '12px', cursor: 'pointer' }}>
+                <span style={{ fontFamily: 'Syne', fontWeight: 700 }}>{w.ticker}</span>
+                <span style={{ color: w.up ? 'var(--accent)' : 'var(--red)' }}>{w.up ? '▲' : '▼'} {w.chg}</span>
+              </div>
+            ))}
+          </>
+        )}
 
         {/* Logout */}
         <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
-          <div onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '13px', color: 'var(--red)', background: 'rgba(255,77,109,0.08)', border: '1px solid rgba(255,77,109,0.15)' }}>
-            🚪 Logout
+          <div
+            onClick={handleLogout}
+            title="Logout"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: sidebarOpen ? '9px 12px' : '10px', borderRadius: '10px', cursor: 'pointer', fontSize: '13px', color: 'var(--red)', background: 'rgba(255,77,109,0.08)', border: '1px solid rgba(255,77,109,0.15)', justifyContent: sidebarOpen ? 'flex-start' : 'center' }}
+          >
+            <span style={{ fontSize: '16px' }}>🚪</span>
+            {sidebarOpen && 'Logout'}
           </div>
         </div>
       </div>
 
       {/* MAIN CONTENT */}
-      <div style={{ marginLeft: '240px', marginBottom: '40px', padding: '28px', minHeight: 'calc(100vh - 40px)' }}>
+      <div style={{
+        marginLeft: sidebarOpen ? '240px' : '64px',
+        marginBottom: '40px',
+        padding: '28px',
+        minHeight: 'calc(100vh - 40px)',
+        transition: 'margin-left 0.3s ease'
+      }}>
 
         {/* HOME STATE */}
         {!stockData && !loading && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '70vh', gap: '16px', textAlign: 'center' }}>
-            <div style={{ fontFamily: 'Syne', fontSize: '48px', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent2), var(--gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-2px' }}>
+            <Image src="/logo.jpg" alt="FinSight AI" width={80} height={80} style={{ borderRadius: '20px', objectFit: 'cover', marginBottom: '8px' }} />
+            <div style={{ fontFamily: 'Syne', fontSize: '40px', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent2), var(--gold))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-2px' }}>
               FinSight AI
             </div>
             <div style={{ color: 'var(--muted)', fontSize: '16px' }}>Enter a stock ticker on the left to begin your analysis</div>
@@ -192,14 +242,14 @@ export default function Dashboard() {
               </button>
             </div>
 
-            {/* Metric Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '20px' }}>
+            {/* Metric Cards Row 1 */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '12px' }}>
               {[
                 { label: 'Ticker', value: stockData.ticker, color: 'var(--accent2)' },
                 { label: 'Sector', value: stockData.sector || 'N/A', small: true },
                 { label: 'Price', value: `$${stockData.price}` },
                 { label: 'Market Cap', value: stockData.market_cap },
-                { label: 'AI Verdict', value: stockData.verdict || 'HOLD', color: 'var(--accent)', glow: true },
+                { label: 'AI Verdict', value: stockData.verdict || 'HOLD', color: stockData.verdict === 'BUY' ? 'var(--accent)' : stockData.verdict === 'SELL' ? 'var(--red)' : 'var(--gold)', glow: true },
               ].map((card, i) => (
                 <div key={i} style={{
                   background: card.glow ? 'linear-gradient(135deg,rgba(0,229,160,0.07),rgba(0,229,160,0.03))' : 'var(--surface)',
@@ -207,12 +257,12 @@ export default function Dashboard() {
                   borderRadius: '14px', padding: '16px'
                 }}>
                   <div style={{ fontSize: '11px', color: 'var(--muted)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '8px' }}>{card.label}</div>
-                  <div style={{ fontFamily: 'Syne', fontSize: card.small ? '14px' : '20px', fontWeight: 700, color: card.color || 'var(--text)', textShadow: card.glow ? '0 0 20px rgba(0,229,160,0.4)' : 'none' }}>{card.value}</div>
+                  <div style={{ fontFamily: 'Syne', fontSize: card.small ? '14px' : '20px', fontWeight: 700, color: card.color || 'var(--text)' }}>{card.value}</div>
                 </div>
               ))}
             </div>
 
-            {/* Extra Metric Cards */}
+            {/* Metric Cards Row 2 */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '20px' }}>
               {[
                 { label: 'P/E Ratio', value: stockData.pe_ratio || 'N/A' },
@@ -227,13 +277,24 @@ export default function Dashboard() {
               ))}
             </div>
 
+            {/* AI Confidence */}
+            {stockData.confidence && (
+              <div style={{ background: 'var(--surface)', border: '1px solid rgba(0,229,160,0.15)', borderRadius: '14px', padding: '16px 20px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ fontSize: '13px', color: 'var(--muted)' }}>AI Confidence</div>
+                <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ width: `${stockData.confidence}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent), var(--accent2))', borderRadius: '3px', transition: 'width 1s ease' }} />
+                </div>
+                <div style={{ fontFamily: 'Syne', fontWeight: 700, color: 'var(--accent)', fontSize: '16px' }}>{stockData.confidence}%</div>
+              </div>
+            )}
+
             {/* Chart */}
             <StockChart ticker={stockData.ticker} />
 
             {/* AI Summary */}
             {stockData.summary && (
-              <div style={{ background: 'var(--surface)', border: '1px solid rgba(0,229,160,0.15)', borderRadius: '14px', padding: '20px', marginBottom: '20px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--accent)', marginBottom: '8px' }}>🧠 AI Analysis</div>
+              <div style={{ background: 'var(--surface)', border: '1px solid rgba(0,229,160,0.15)', borderRadius: '14px', padding: '20px', marginBottom: '16px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--accent)', marginBottom: '10px' }}>🧠 AI Analysis</div>
                 <div style={{ fontSize: '14px', color: 'var(--text)', lineHeight: 1.7 }}>{stockData.summary}</div>
               </div>
             )}
@@ -273,7 +334,7 @@ export default function Dashboard() {
         <style>{`@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
       </div>
 
-      {/* AI CHAT ASSISTANT */}
+      {/* AI CHAT */}
       <ChatAssistant
         stockContext={stockData
           ? `${stockData.name} (${stockData.ticker}) - Price: $${stockData.price}, Sector: ${stockData.sector}, Verdict: ${stockData.verdict}`
