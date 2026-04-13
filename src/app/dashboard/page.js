@@ -72,7 +72,7 @@ export default function Dashboard() {
         {/* Logo + Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', minWidth: 0 }}>
           <Image
-            src="/logo.jpg"
+            src="/logo.png"
             alt="FinSight AI"
             width={32}
             height={32}

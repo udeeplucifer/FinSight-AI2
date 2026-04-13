@@ -26,7 +26,7 @@ export default function LandingPage() {
       {/* NAVBAR */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 40px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Image src="/logo.jpg" alt="FinSight AI" width={36} height={36} style={{ borderRadius: '10px', objectFit: 'cover' }} />
+          <Image src="/logo.png" alt="FinSight AI" width={36} height={36} style={{ borderRadius: '10px', objectFit: 'cover' }} />
           <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '20px', background: 'linear-gradient(135deg, var(--accent), var(--accent2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             FinSight AI
           </span>
