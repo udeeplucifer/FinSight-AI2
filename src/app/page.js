@@ -23,7 +23,7 @@ export default function LandingPage() {
     <main style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
 
       {/* NAVBAR */}
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 40px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img src="/logo.png" alt="FinSight AI" width={36} height={36} style={{ borderRadius: '10px', objectFit: 'cover' }} />
           <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '20px', background: 'linear-gradient(135deg, var(--accent), var(--accent2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -36,8 +36,8 @@ export default function LandingPage() {
       </nav>
 
       {/* HERO */}
-      <section style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', maxWidth: '1100px', width: '100%', alignItems: 'center' }}>
+      <section style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', maxWidth: '1100px', width: '100%', alignItems: 'center' }}>
 
           {/* LEFT */}
           <div>
@@ -46,7 +46,7 @@ export default function LandingPage() {
               <span style={{ fontSize: '13px', color: 'var(--accent)', fontWeight: 500 }}>AI-Powered Stock Intelligence</span>
             </div>
 
-            <h1 style={{ fontFamily: 'Syne', fontSize: '52px', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-2px', marginBottom: '20px' }}>
+            <h1 style={{ fontFamily: 'Syne', fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-2px', marginBottom: '20px' }}>
               Understand the{' '}
               <span style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 Stock Market
@@ -54,7 +54,7 @@ export default function LandingPage() {
               {' '}like never before
             </h1>
 
-            <p style={{ fontSize: '16px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: '32px', maxWidth: '460px' }}>
+            <p style={{ fontSize: '16px', color: 'var(--muted)', lineHeight: 1.7, marginBottom: '32px' }}>
               Whether you're a complete beginner or a seasoned pro — FinSight AI gives you real-time analysis, AI verdicts, and plain-English explanations for any stock.
             </p>
 
@@ -84,15 +84,14 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* RIGHT — Preview */}
-          <div style={{ position: 'relative' }}>
+          {/* RIGHT — Preview (hidden on mobile via CSS) */}
+          <div id="preview-card" style={{ position: 'relative' }}>
             <div style={{ background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '20px', padding: '24px', boxShadow: '0 40px 80px rgba(0,0,0,0.4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                 <img src="/logo.png" alt="Logo" width={28} height={28} style={{ borderRadius: '8px', objectFit: 'cover' }} />
                 <span style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '14px', color: 'var(--accent)' }}>FinSight AI</span>
                 <span style={{ marginLeft: 'auto', fontSize: '11px', padding: '3px 10px', borderRadius: '20px', background: 'rgba(0,229,160,0.1)', color: 'var(--accent)', border: '1px solid rgba(0,229,160,0.2)' }}>● Live</span>
               </div>
-
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', marginBottom: '16px' }}>
                 {[
                   { label: 'AAPL', value: '$189.50', color: 'var(--accent2)' },
@@ -105,7 +104,6 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-
               <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '14px', border: '1px solid rgba(255,255,255,0.06)', marginBottom: '12px' }}>
                 <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '10px' }}>📈 Price Chart</div>
                 <svg width="100%" height="60" viewBox="0 0 300 60">
@@ -113,7 +111,6 @@ export default function LandingPage() {
                   <polyline points="0,50 40,40 80,45 120,25 160,30 200,15 240,20 300,5 300,60 0,60" fill="rgba(0,229,160,0.08)" strokeWidth="0"/>
                 </svg>
               </div>
-
               <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '8px' }}>📰 Latest News</div>
               {['Apple beats Q4 earnings expectations', 'iPhone 16 demand surges globally'].map((n, i) => (
                 <div key={i} style={{ display: 'flex', gap: '8px', padding: '8px 0', borderBottom: i === 0 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
@@ -127,8 +124,8 @@ export default function LandingPage() {
       </section>
 
       {/* FEATURES */}
-      <section style={{ padding: '40px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', maxWidth: '1100px', margin: '0 auto' }}>
+      <section style={{ padding: '30px 20px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', maxWidth: '1100px', margin: '0 auto' }}>
           {[
             { icon: '📈', title: 'Real-time Analysis', desc: 'Live stock prices, charts & technical indicators' },
             { icon: '🧠', title: 'AI Verdicts', desc: 'Buy, Sell or Hold with clear reasoning' },

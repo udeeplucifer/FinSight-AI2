@@ -33,3 +33,58 @@ h1, h2, h3, h4, h5 {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #1a2540; border-radius: 4px; }
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+  /* Hide sidebar on mobile */
+  .sidebar-desktop {
+    display: none !important;
+  }
+
+  /* Main content full width */
+  .main-content {
+    margin-left: 0 !important;
+    padding: 16px !important;
+  }
+
+  /* Mobile navbar */
+  .mobile-nav {
+    display: flex !important;
+  }
+
+  /* Landing page hero — stack vertically */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hide preview card on mobile */
+  .preview-card {
+    display: none !important;
+  }
+
+  /* Metric cards — 2 columns on mobile */
+  .metrics-row-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .metrics-row-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Features — 2 columns */
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Compare grid */
+  .compare-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Chat panel width */
+  .chat-panel-mobile {
+    width: calc(100vw - 48px) !important;
+    right: 24px !important;
+  }
+}
