@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import StockChart from '@/components/StockChart'
 import ChatAssistant from '@/components/ChatAssistant'
-import Image from 'next/image'
+
 
 export default function Dashboard() {
   const router = useRouter()
@@ -71,7 +71,7 @@ export default function Dashboard() {
 
         {/* Logo + Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', minWidth: 0 }}>
-          <Image
+          <Img
             src="/logo.png"
             alt="FinSight AI"
             width={32}
